@@ -21,7 +21,6 @@ WITH blended_data as
             campaign_name, spend, clicks, impressions, purchases as paid_purchases, revenue as paid_revenue,
             0 as sho_purchases, 0 as sho_ft_purchases, 0 as sho_revenue, 0 as sho_ft_revenue
         FROM {{ source('reporting','tiktok_ad_performance') }}
-        WHERE source_medium IN ('google / cpc','Facebook / paidsocial')
         UNION ALL
         SELECT 'Shopify' as channel, date, date_granularity,
         null as campaign_name, 0 as spend, 0 as clicks, 0 as impressions, 0 as paid_purchases, 0 as paid_revenue,
@@ -42,7 +41,5 @@ SELECT channel,
     sho_purchases,
     sho_ft_purchases,
     sho_revenue,
-    sho_ft_revenue,
-    ga4_purchases, 
-    ga4_revenue
+    sho_ft_revenue
 FROM blended_data
