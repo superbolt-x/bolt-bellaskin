@@ -1,1 +1,17 @@
 version: 2
+
+sources:
+  - name: reporting
+    schema: reporting
+    tables:
+      - name: facebook_ad_performance
+        identifier: tenlittle_facebook_ad_performance
+  
+      - name: googleads_campaign_performance
+        identifier: tenlittle_googleads_campaign_performance
+        
+      - name: shopify_sales
+        identifier: tenlittle_shopify_sales
+  
+      - name: tiktok_ad_performance
+        identifier: tenlittle_tiktok_ad_performance
