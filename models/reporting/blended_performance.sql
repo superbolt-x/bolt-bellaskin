@@ -24,7 +24,7 @@ WITH blended_data as
         UNION ALL
         SELECT 'Shopify' as channel, date, date_granularity,
         null as campaign_name, 0 as spend, 0 as clicks, 0 as impressions, 0 as paid_purchases, 0 as paid_revenue,
-            orders as sho_purchases, first_orders as sho_ft_purchases, total_net_sales as sho_revenue, first_order_total_net_sales as sho_ft_revenue
+            orders as sho_purchases, first_orders as sho_ft_purchases, net_sales as sho_revenue, first_order_net_sales as sho_ft_revenue
         FROM {{ source('reporting','shopify_sales') }}
         )
     GROUP BY channel, date, date_granularity, campaign_name)
