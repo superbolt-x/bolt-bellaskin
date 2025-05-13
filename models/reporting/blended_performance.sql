@@ -24,8 +24,17 @@ WITH blended_data as
         UNION ALL
         SELECT 'Shopify' as channel, date, date_granularity,
         null as campaign_name, 0 as spend, 0 as clicks, 0 as impressions, 0 as paid_purchases, 0 as paid_revenue,
-            orders as sho_purchases, first_orders as sho_ft_purchases, net_sales as sho_revenue, first_order_net_sales as sho_ft_revenue
-        FROM {{ source('reporting','shopify_sales') }}
+            count(*) as sho_purchases, sum(case when customer_order_index = 1 then 1 else 0 end) as sho_ft_purchases, 
+            sum(subtotal_revenue) as sho_revenue, sum(case when customer_order_index = 1 then subtotal_revenue else 0 end) as sho_ft_revenue
+        FROM (
+        SELECT * FROM reporting.bellaskin_shopify_daily_sales_by_order
+	    WHERE order_id NOT IN (
+            select order_id from (select order_id, count(*)
+	        from reporting.bellaskin_shopify_daily_sales_by_order_line_item
+	        where product_title = 'Probiotic Underarm Toner' and quantity > 5
+	        group by 1)
+            )
+        )
         )
     GROUP BY channel, date, date_granularity, campaign_name)
     
