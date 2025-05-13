@@ -12,6 +12,12 @@ sources:
         
       - name: shopify_sales
         identifier: bellaskin_shopify_sales
+
+      - name: shopify_orders
+        identifier: bellaskin_shopify_daily_sales_by_order
+
+      - name: shopify_line_items
+        identifier: bellaskin_shopify_daily_sales_by_order_line_item
   
       - name: tiktok_ad_performance
         identifier: bellaskin_tiktok_ad_performance
