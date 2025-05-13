@@ -11,7 +11,7 @@ with shopify_orders_filtered as (
     where order_id not in (
         select order_id
         from (
-            select order_id
+            select order_id,count(*)
             from {{ source('reporting', 'shopify_line_items') }}
             where product_title = 'Probiotic Underarm Toner'
               and quantity > 5
@@ -51,6 +51,7 @@ with shopify_orders_filtered as (
     {% endfor %}
 
 )
+    
 , blended_data as
     (SELECT channel, date::date, date_granularity, campaign_name, COALESCE(SUM(spend),0) as spend, COALESCE(SUM(clicks),0) as clicks, COALESCE(SUM(impressions),0) as impressions, 
         COALESCE(SUM(paid_purchases),0) as paid_purchases, COALESCE(SUM(paid_revenue),0) as paid_revenue, 
