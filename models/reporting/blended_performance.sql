@@ -27,10 +27,10 @@ WITH blended_data as
             count(*) as sho_purchases, sum(case when customer_order_index = 1 then 1 else 0 end) as sho_ft_purchases, 
             sum(subtotal_revenue) as sho_revenue, sum(case when customer_order_index = 1 then subtotal_revenue else 0 end) as sho_ft_revenue
         FROM (
-        SELECT * FROM reporting.bellaskin_shopify_daily_sales_by_order
+        SELECT * FROM {{ source('reporting','shopify_orders') }}
 	    WHERE order_id NOT IN (
             select order_id from (select order_id, count(*)
-	        from reporting.bellaskin_shopify_daily_sales_by_order_line_item
+	        from {{ source('reporting','shopify_line_items') }}
 	        where product_title = 'Probiotic Underarm Toner' and quantity > 5
 	        group by 1)
             )
