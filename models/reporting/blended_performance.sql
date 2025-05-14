@@ -11,11 +11,11 @@ with shopify_orders_filtered as (
     where order_id not in (
         select order_id
         from (
-            select order_id,count(*)
+            select order_id, sum(quantity) as toner_quantity
             from {{ source('reporting', 'shopify_line_items') }}
-            where product_title = 'Probiotic Underarm Toner'
-              and quantity > 5
+            where product_title IN ('Probiotic Underarm Toner','Rose Neroli Hydrating Toner')
             group by order_id
+            having toner_quantity > 5
         )
     )
 
